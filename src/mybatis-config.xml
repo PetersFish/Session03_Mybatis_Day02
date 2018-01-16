@@ -4,6 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<properties resource="db.properties"></properties>
+	<typeAliases>
+		<package name="cn.peter.pojo"/>
+		<!-- <typeAlias alias="User" type="cn.peter.pojo.User"/> -->
+	</typeAliases>
 	<environments default="development">
 		<!--默认连接环境 -->
 		<environment id="development">
@@ -20,6 +24,8 @@
 	</environments>
 	<mappers>
 		<!--加载mapper文件 -->
-		<mapper resource="cn/peter/mapper/UserMapper.xml" />
+		<!-- <mapper resource="cn/peter/mapper/UserMapper.xml" /> -->
+		<!-- <mapper class="cn.peter.mapper.UserMapper"/> -->
+		<package name="cn.peter.mapper"/>
 	</mappers>
 </configuration>

@@ -2,19 +2,38 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--映射接口-->
+<!--映射接口 -->
 <mapper namespace="cn.peter.mapper.UserMapper">
-  <!--映射接口方法-->
-  <select id="save" resultType="java.lang.Integer">
-    insert into user (id,username,password) values (#{id},#{username},#{password})
-  </select>
-  <select id="getUserById" resultType="cn.peter.pojo.User">
-    select * from user where id=#{id}
-  </select>
-  <select id="update" resultType="java.lang.Integer">
-    update user set username=#{username}, password=#{password} where id=#{id}
-  </select>
-  <select id="deleteById" resultType="java.lang.Integer">
-    delete from user where id=#{id}
-  </select>
+	<!--映射接口方法 -->
+	<!-- 增 -->
+	<insert id="save" parameterType="User">
+		<selectKey keyProperty="id" resultType="int" order="AFTER">
+			select
+			last_insert_id()
+		</selectKey>
+		insert into user (username,password) values (#{username},#{password})
+	</insert>
+	
+	<!-- 查 -->
+	<select id="getUserById" resultType="User">
+		select * from user where
+		id=#{id}
+	</select>
+	
+	<!-- 查：按名字查 -->
+	<select id="listUserByName" parameterType="java.lang.String" resultType="User">
+		select * from user where username like '%${value}%'
+	</select>
+	
+	<!-- 改 -->
+	<update id="update" parameterType="User">
+		update user set
+		username=#{username}, password=#{password} where id=#{id}
+	</update>
+	
+	<!-- 删 -->
+	<delete id="deleteById" parameterType="int">
+		delete from user where
+		id=#{id}
+	</delete>
 </mapper>

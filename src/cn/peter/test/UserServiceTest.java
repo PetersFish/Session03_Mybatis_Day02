@@ -1,6 +1,8 @@
 package cn.peter.test;
 
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,9 +20,9 @@ public class UserServiceTest {
 	@Test
 	public void testSave() {
 		User user = new User();
-		user.setId(4);
-		user.setUsername("Maya");
-		user.setPassword("555");
+		//user.setId(4);
+		user.setUsername("wangcai");
+		user.setPassword("666");
 		Integer i = service.save(user);
 		System.out.println(i);
 	}
@@ -30,20 +32,26 @@ public class UserServiceTest {
 		User user = service.getUserById(1);
 		System.out.println(user);
 	}
+	
+	@Test
+	public void testListUserByName() {
+		List<User> list = service.listUserByName("m");
+		System.out.println(list);
+	}
 
 	@Test
 	public void testUpdate() {
 		User user = new User();
 		user.setId(3);
-		user.setUsername("Gaga");
-		user.setPassword("789");
+		user.setUsername("Mama");
+		//user.setPassword("789");
 		Integer i = service.update(user);
 		System.out.println(i);
 	}
 
 	@Test
 	public void testDeleteById() {
-		Integer i = service.deleteById(3);
+		Integer i = service.deleteById(10);
 		System.out.println(i);
 	}
 

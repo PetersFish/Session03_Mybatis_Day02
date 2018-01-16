@@ -1,5 +1,8 @@
 package cn.peter.mapper;
 
+
+import java.util.List;
+
 import cn.peter.pojo.User;
 
 public interface UserMapper {
@@ -9,6 +12,9 @@ public interface UserMapper {
 	
 	//select
 	User getUserById(Integer id);
+	
+	//select by name
+	List<User> listUserByName(String name);
 	
 	//update
 	Integer update(User user);
