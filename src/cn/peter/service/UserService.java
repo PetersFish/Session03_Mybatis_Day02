@@ -47,6 +47,38 @@ public class UserService {
 		return user;
 	}
 	
+	//select by id
+	public User getUserById2(Integer id) {
+		SqlSession session = sf.openSession();
+		User user = null;
+		try {
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			user = mapper.getUserById2(id);
+			session.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			session.close();
+		}
+		return user;
+	}
+	
+	//select by id
+	public User getUserById3(Integer id) {
+		SqlSession session = sf.openSession();
+		User user = null;
+		try {
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			user = mapper.getUserById3(id);
+			session.commit();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			session.close();
+		}
+		return user;
+	}
+	
 	//select by name
 	public List<User> listUserByName(String name){
 		SqlSession session = sf.openSession();
@@ -54,6 +86,60 @@ public class UserService {
 		try {
 			UserMapper mapper = session.getMapper(UserMapper.class);
 			list = mapper.listUserByName(name);
+			session.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		
+		return list;
+	}
+	
+	//list all users
+	public List<User> listAll(){
+		SqlSession session = sf.openSession();
+		List<User> list = null;
+		try {
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			list = mapper.listAll();
+			session.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		
+		return list;
+	}
+	
+	//list all users join orders
+	public List<User> listAll2(){
+		SqlSession session = sf.openSession();
+		List<User> list = null;
+		try {
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			list = mapper.listAll2();
+			session.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			session.close();
+		}
+		
+		return list;
+	}
+	
+	//list all users join orders
+	public List<User> listBySelect1(){
+		SqlSession session = sf.openSession();
+		List<User> list = null;
+		try {
+			UserMapper mapper = session.getMapper(UserMapper.class);
+			list = mapper.listBySelect1();
 			session.commit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

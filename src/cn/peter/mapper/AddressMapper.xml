@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--映射接口 -->
+<mapper namespace="cn.peter.mapper.AddressMapper">
+	<resultMap type="Address" id="addressResultMap">
+		<id column="t_id" property="id"/>
+		<result column="t_province" property="province"/>
+		<result column="t_city" property="city"/>
+	</resultMap>
+	
+	<select id="getAddressByUid" parameterType="int" resultMap="addressResultMap">
+		select * from address where t_uid=#{id}
+	</select>
+</mapper>

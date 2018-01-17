@@ -4,33 +4,102 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--映射接口 -->
 <mapper namespace="cn.peter.mapper.UserMapper">
+	<resultMap type="User" id="userResultMap">
+		<id column="t_id" property="id" />
+		<result column="t_username" property="username" />
+		<result column="t_password" property="password" />
+		<association property="address" column="t_uid" javaType="Address"></association>
+	</resultMap>
+
+	<resultMap type="User" id="userResultMap2" extends="userResultMap">
+		<!-- <id column="t_id" property="id"/> <result column="t_username" property="username"/> 
+			<result column="t_password" property="password"/> -->
+		<association property="address" column="t_uid" javaType="Address">
+			<id column="t_id" property="id" />
+			<result column="t_province" property="province" />
+			<result column="t_city" property="city" />
+		</association>
+	</resultMap>
+
+	<resultMap type="User" id="userResultMap3" extends="userResultMap2">
+		<collection property="orders" column="t_uid" ofType="Order">
+			<id column="tid" property="id" />
+			<result column="tname" property="name" />
+			<result column="t_price" property="price" />
+		</collection>
+	</resultMap>
+
+	<resultMap type="User" id="userResultMap4" extends="userResultMap">
+		<association property="address" column="t_id"
+			select="cn.peter.mapper.AddressMapper.getAddressByUid"></association>
+		<collection property="orders" column="t_id"
+			select="cn.peter.mapper.OrderMapper.getOrderByUid"></collection>
+	</resultMap>
 	<!--映射接口方法 -->
 	<!-- 增 -->
-	<insert id="save" parameterType="User">
-		<selectKey keyProperty="id" resultType="int" order="AFTER">
-			select
-			last_insert_id()
-		</selectKey>
-		insert into user (username,password) values (#{username},#{password})
+	<!-- <insert id="save" parameterType="User"> <selectKey keyProperty="id" 
+		resultType="int" order="AFTER"> select last_insert_id() </selectKey> insert 
+		into user (username,password) values (#{username},#{password}) </insert> -->
+	<insert id="save" useGeneratedKeys="true" keyProperty="id"
+		keyColumn="id">
+		insert into user (username,password) values
+		(#{username},#{password})
 	</insert>
-	
+
 	<!-- 查 -->
 	<select id="getUserById" resultType="User">
 		select * from user where
-		id=#{id}
+		uid=#{id}
 	</select>
-	
+
+	<!-- 查：给出具体列 -->
+	<select id="getUserById2" resultType="User">
+		select t_id as id,
+		t_username as username , t_password as password from user where
+		t_id=#{id}
+	</select>
+
+	<!-- 查：给出具体列 by map -->
+	<select id="getUserById3" resultMap="userResultMap">
+		select u.t_id, u.t_username,
+		u.t_password, ad.`t_id`, ad.`t_province`,
+		ad.`t_city` from user u left
+		join address ad on u.t_id=ad.t_uid
+	</select>
+
+
 	<!-- 查：按名字查 -->
-	<select id="listUserByName" parameterType="java.lang.String" resultType="User">
+	<select id="listUserByName" parameterType="java.lang.String"
+		resultType="User">
 		select * from user where username like '%${value}%'
 	</select>
-	
+
+	<!-- 查：所有user -->
+	<select id="listAll" resultMap="userResultMap2">
+		select u.t_id, u.t_username,
+		u.t_password, ad.`t_id`, ad.`t_province`,
+		ad.`t_city` from user u left
+		join address ad on u.t_id=ad.t_uid
+	</select>
+
+	<!-- 查：所有user 外链接order -->
+	<select id="listAll2" resultMap="userResultMap3">
+		select
+		u.*,o.`t_id`
+		tid,o.`t_name` tname,o.`t_price` from user u left join orders o on
+		u.`t_id`=o.`t_uid`
+	</select>
+
+	<select id="listBySelect1" resultMap="userResultMap4">
+		select * from user
+	</select>
+
 	<!-- 改 -->
 	<update id="update" parameterType="User">
 		update user set
 		username=#{username}, password=#{password} where id=#{id}
 	</update>
-	
+
 	<!-- 删 -->
 	<delete id="deleteById" parameterType="int">
 		delete from user where

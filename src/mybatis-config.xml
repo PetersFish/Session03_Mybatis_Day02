@@ -4,8 +4,16 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<properties resource="db.properties"></properties>
+	<settings>
+		<!-- 二级缓存 -->
+		<setting name="cacheEnabled" value="false" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<!-- 如果A关联B,A关联C,查询A时,把B也关联出来,C要不要关联出来 -->
+		<setting name="aggressiveLazyLoading" value="false" />
+		<setting name="logImpl" value="LOG4J" />
+	</settings>
 	<typeAliases>
-		<package name="cn.peter.pojo"/>
+		<package name="cn.peter.pojo" />
 		<!-- <typeAlias alias="User" type="cn.peter.pojo.User"/> -->
 	</typeAliases>
 	<environments default="development">
@@ -26,6 +34,7 @@
 		<!--加载mapper文件 -->
 		<!-- <mapper resource="cn/peter/mapper/UserMapper.xml" /> -->
 		<!-- <mapper class="cn.peter.mapper.UserMapper"/> -->
-		<package name="cn.peter.mapper"/>
+		<package name="cn.peter.pojo" />
+		<package name="cn.peter.mapper" />
 	</mappers>
 </configuration>
